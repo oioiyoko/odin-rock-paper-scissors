@@ -18,7 +18,7 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection, computerSelection) {
-    let status;
+    let status = 0;
     if (playerSelection === computerSelection) {
         status = 0;
     }
@@ -51,25 +51,41 @@ function playRound(playerSelection, computerSelection) {
 
 function game() {
     let score = 0;
-    let result;
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("Rock, Paper, or Scissors?")
-        playerSelection = playerSelection.toLowerCase();
-        let computerSelection = getComputerChoice();
+    let turns = 0;
+    let playerSelection = "";
+    let computerSelection = "";
+    let btn = document.querySelector('#signs');
+
+    btn.addEventListener('click', (event) => {
+        const result = document.querySelector('.displayResults');
+        playerSelection = event.target.className;
+        console.log("player played: " + playerSelection);
+        computerSelection = getComputerChoice();
+        console.log("computer played: " + computerSelection);
         score += playRound(playerSelection, computerSelection);
-    }
-    if (score = 0) {
-        result = "tie";
-        console.log("You " + result + "!");
-    }
-    else if (score > 0) {
-        result = "win";
-        console.log("You " + result + "!");
-    }
-    else {
-        result = "lose";
-        console.log("You " + result + "!");
-    }
+
+        result.textContent = "Player played: " + playerSelection + "\r\n";
+        result.textContent += "Computer played: " + computerSelection;
+        console.log("new score is: " + score);
+        turns++;
+        console.log("turns: "+ turns)
+
+        if (turns == 5) {
+            if (score == 0) {
+                result.textContent = 'You tie!';
+            }
+            else if (score > 0) {
+                result.textContent ='You win!';
+            }
+            else if (score < 0) {
+                result.textContent = 'You lose!';
+            }
+        }
+        else if (turns > 5) {
+            turns = 0;
+            score =0;
+        }
+    });
 }
 
 game();
